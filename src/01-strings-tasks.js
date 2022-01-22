@@ -177,7 +177,7 @@ function convertToUpperCase(str) {
  *   'info@gmail.com' => ['info@gmail.com']
  */
 function extractEmails(str) {
-  return str.split(' ');
+  return str.split(';');
 }
 
 /**
@@ -203,8 +203,13 @@ function extractEmails(str) {
  *             '└──────────┘\n'
  *
  */
-function getRectangleString(/* width, height */) {
-  throw new Error('Not implemented');
+function getRectangleString(width, height) {
+  let rectangle = '┐\n'.padStart(width, '─').padStart(width + 1, '┌');
+  for (let row = 1; row < height - 1; row += 1) {
+    rectangle += '│\n'.padStart(width, ' ').padStart(width + 1, '│');
+  }
+  rectangle += '┘\n'.padStart(width, '─').padStart(width + 1, '└');
+  return rectangle;
 }
 
 /**
@@ -223,8 +228,24 @@ function getRectangleString(/* width, height */) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  return str
+    .split('')
+    .map((char) => {
+      const charCode = char.charCodeAt();
+      if (charCode >= 97 && charCode <= 122) {
+        return charCode > 109
+          ? String.fromCharCode(charCode - 13)
+          : String.fromCharCode(charCode + 13);
+      }
+      if (charCode >= 65 && charCode <= 90) {
+        return charCode > 77
+          ? String.fromCharCode(charCode - 13)
+          : String.fromCharCode(charCode + 13);
+      }
+      return char;
+    })
+    .join('');
 }
 
 /**
@@ -240,8 +261,8 @@ function encodeToRot13(/* str */) {
  *   isString('test') => true
  *   isString(new String('test')) => true
  */
-function isString(/* value */) {
-  throw new Error('Not implemented');
+function isString(value) {
+  return typeof value === 'string' || value instanceof String;
 }
 
 /**
@@ -268,8 +289,62 @@ function isString(/* value */) {
  *   'Q♠' => 50
  *   'K♠' => 51
  */
-function getCardId(/* value */) {
-  throw new Error('Not implemented');
+function getCardId(value) {
+  const cardsArr = [
+    'A♣',
+    '2♣',
+    '3♣',
+    '4♣',
+    '5♣',
+    '6♣',
+    '7♣',
+    '8♣',
+    '9♣',
+    '10♣',
+    'J♣',
+    'Q♣',
+    'K♣',
+    'A♦',
+    '2♦',
+    '3♦',
+    '4♦',
+    '5♦',
+    '6♦',
+    '7♦',
+    '8♦',
+    '9♦',
+    '10♦',
+    'J♦',
+    'Q♦',
+    'K♦',
+    'A♥',
+    '2♥',
+    '3♥',
+    '4♥',
+    '5♥',
+    '6♥',
+    '7♥',
+    '8♥',
+    '9♥',
+    '10♥',
+    'J♥',
+    'Q♥',
+    'K♥',
+    'A♠',
+    '2♠',
+    '3♠',
+    '4♠',
+    '5♠',
+    '6♠',
+    '7♠',
+    '8♠',
+    '9♠',
+    '10♠',
+    'J♠',
+    'Q♠',
+    'K♠',
+  ];
+  return cardsArr.indexOf(value).toString();
 }
 
 module.exports = {
